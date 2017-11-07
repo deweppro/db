@@ -1,0 +1,21 @@
+{
+    "name": "deweppro/db",
+    "description": "Client databases",
+    "keywords": ["sql","nosql"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mikhail Knyazhev",
+            "email": "markus621@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Dewep\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0.0"
+    }
+}
