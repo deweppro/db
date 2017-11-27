@@ -42,7 +42,7 @@ class Select
      */
     protected $query;
     protected $type = \PDO::FETCH_ASSOC;
-    protected $link = '';
+    protected $link = null;
 
     /**
      *
@@ -96,6 +96,9 @@ class Select
      */
     public function getAll()
     {
+        if (empty($this->link)) {
+            return $this->query->fetchAll($this->type);
+        }
         return $this->query->fetchAll($this->type, $this->link);
     }
 
@@ -105,7 +108,12 @@ class Select
      */
     public function getChunk(callable $callback)
     {
-        $this->query->setFetchMode($this->type, $this->link);
+        if (empty($this->link)) {
+            $this->query->setFetchMode($this->type);
+        } else {
+            $this->query->setFetchMode($this->type, $this->link);
+        }
+
         while ($row = $this->query->fetch()) {
             $callback($row);
         }
