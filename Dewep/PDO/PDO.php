@@ -62,9 +62,13 @@ class PDO
      * @param array $data
      * @return string
      */
-    protected function array2json(array &$value, string $key): string
+    protected function array2json(&$value, string $key)
     {
-        $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+        if (
+                is_array($value)
+        ) {
+            $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+        }
     }
 
     /**
