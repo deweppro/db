@@ -1,54 +1,27 @@
 <?php
 
-/*
- * The MIT License
- *
- * Copyright 2017 Mikhail Knyazhev <markus621@gmail.com>.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
 namespace Dewep\PDO;
 
-use \PDOStatement;
-use \PDOExecption;
-use Dewep\PDO\Select;
+use PDOExecption;
+use PDOStatement;
 
 /**
- *
  * @author Mikhail Knyazhev <markus621@gmail.com>
  */
 class PDO
 {
 
-    /**
-     *
-     * @var \PDO
-     */
+    /** @var \PDO */
     protected $db;
 
-    /**
-     *
-     * @var bool
-     */
+    /** @var bool  */
     protected $transaction = false;
 
+    /**
+     * @param string $connect
+     * @param string $user
+     * @param string $pwd
+     */
     public function __construct(string $connect, string $user, string $pwd)
     {
         $this->db = new \PDO($connect, $user, $pwd);
@@ -58,24 +31,23 @@ class PDO
     }
 
     /**
-     *
-     * @param array $data
-     * @return string
+     * @param string $query
+     * @param array $params
+     * @return Select
+     * @throws \Exception
      */
-    protected function array2json(&$value, string $key)
+    public function select(string $query, array $params = []): Select
     {
-        if (
-                is_array($value)
-        ) {
-            $value = json_encode($value, JSON_UNESCAPED_UNICODE);
-        }
+        $q = $this->query($query, $params);
+
+        return new Select($q);
     }
 
     /**
-     *
      * @param string $query
      * @param array $params
      * @return PDOStatement
+     * @throws \Exception
      */
     protected function query(string $query, array $params = []): PDOStatement
     {
@@ -89,10 +61,11 @@ class PDO
             try {
                 $this->db->beginTransaction();
 
-                if (!empty($params))
+                if (!empty($params)) {
                     $e->execute($params);
-                else
+                } else {
                     $e->execute();
+                }
 
                 $this->db->commit();
             } catch (\PDOExecption $exc) {
@@ -100,64 +73,68 @@ class PDO
 
                 throw new \Exception($exc->getMessage());
             }
-        }
-        //--
+        } //--
         else {
-            if (!empty($params))
+            if (!empty($params)) {
                 $e->execute($params);
-            else
+            } else {
                 $e->execute();
+            }
         }
 
         return $e;
     }
 
     /**
-     *
-     * @param string $query
-     * @param array $params
-     * @return Select
-     */
-    public function select(string $query, array $params = []): Select
-    {
-        $q = $this->query($query, $params);
-        return new Select($q);
-    }
-
-    /**
-     *
      * @param string $query
      * @param array $params
      * @return int
+     * @throws \Exception
      */
     public function insert(string $query, array $params = []): int
     {
         $q = $this->query($query, $params);
+
         return $this->db->lastInsertId();
     }
 
     /**
-     *
      * @param string $query
      * @param array $params
      * @return int
+     * @throws \Exception
      */
     public function update(string $query, array $params = []): int
     {
         $q = $this->query($query, $params);
+
         return $q->rowCount();
     }
 
     /**
-     *
      * @param string $query
      * @param array $params
      * @return int
+     * @throws \Exception
      */
     public function delete(string $query, array $params = []): int
     {
         $q = $this->query($query, $params);
+
         return $q->rowCount();
+    }
+
+    /**
+     * @param $value
+     * @param string $key
+     */
+    protected function array2json(&$value, string $key)
+    {
+        if (
+        is_array($value)
+        ) {
+            $value = json_encode($value, JSON_UNESCAPED_UNICODE);
+        }
     }
 
 }

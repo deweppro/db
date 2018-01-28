@@ -1,51 +1,23 @@
 <?php
 
-/*
- * The MIT License
- *
- * Copyright 2017 Mikhail Knyazhev <markus621@gmail.com>.
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- */
-
 namespace Dewep\PDO;
 
-use \PDOStatement;
+use PDOStatement;
 
 /**
- * Description of Select
- *
  * @author Mikhail Knyazhev <markus621@gmail.com>
  */
 class Select
 {
 
-    /**
-     *
-     * @var \PDOStatement
-     */
+    /** @var PDOStatement */
     protected $query;
+    /** @var int */
     protected $type = \PDO::FETCH_ASSOC;
-    protected $link = null;
+    /** @var string */
+    protected $link;
 
     /**
-     *
      * @param PDOStatement $query
      */
     public function __construct(\PDOStatement $query)
@@ -54,10 +26,9 @@ class Select
     }
 
     /**
-     *
-     * @return $this
+     * @return Select
      */
-    public function asArray()
+    public function asArray(): Select
     {
         $this->type = \PDO::FETCH_ASSOC;
 
@@ -65,11 +36,10 @@ class Select
     }
 
     /**
-     *
      * @param string $class
-     * @return $this
+     * @return Select
      */
-    public function asClass(string $class)
+    public function asClass(string $class): Select
     {
         $this->type = \PDO::FETCH_CLASS;
         $this->link = $class;
@@ -78,11 +48,10 @@ class Select
     }
 
     /**
-     *
      * @param string $function
-     * @return $this
+     * @return Select
      */
-    public function asCallback(string $function)
+    public function asCallback(string $function):Select
     {
         $this->type = \PDO::FETCH_FUNC;
         $this->link = $function;
@@ -91,19 +60,18 @@ class Select
     }
 
     /**
-     *
-     * @return type
+     * @return array
      */
     public function getAll()
     {
         if (empty($this->link)) {
             return $this->query->fetchAll($this->type);
         }
+
         return $this->query->fetchAll($this->type, $this->link);
     }
 
     /**
-     *
      * @param callable $callback
      */
     public function getChunk(callable $callback)
