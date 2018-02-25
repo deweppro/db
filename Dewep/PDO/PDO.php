@@ -2,7 +2,6 @@
 
 namespace Dewep\PDO;
 
-use PDOExecption;
 use PDOStatement;
 
 /**
