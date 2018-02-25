@@ -93,7 +93,7 @@ class PDO
      */
     public function insert(string $query, array $params = []): int
     {
-        $q = $this->query($query, $params);
+        $this->query($query, $params);
 
         return $this->db->lastInsertId();
     }
@@ -137,4 +137,15 @@ class PDO
         }
     }
 
+    /**
+     * @param string $query
+     * @return array
+     */
+    protected function getParamsFromQuery(string $query): array
+    {
+        $matches = null;
+        preg_match_all('/:(\\w+)/imu', $query, $matches);
+
+        return empty($matches) ? [] : $matches;
+    }
 }
