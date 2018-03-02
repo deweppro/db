@@ -160,15 +160,22 @@ abstract class ActiveRecord
             return false;
         }
 
+        $this->fillFromArray($result[0]);
 
-        foreach ($result[0] as $param => $value) {
+        return true;
+    }
+
+    /**
+     * @param array $params
+     */
+    final public function fillFromArray(array $params): void
+    {
+        foreach ($params as $param => $value) {
             $param = $this->db2php($param);
             if (property_exists($this, $param)) {
                 $this->{$param} = $value;
             }
         }
-
-        return true;
     }
 
     /**
@@ -190,11 +197,17 @@ abstract class ActiveRecord
         return $this->getParams(true);
     }
 
+    /**
+     * @param PDO $db
+     */
     final protected function setReadDB(PDO $db)
     {
         $this->_dbRead = $db;
     }
 
+    /**
+     * @param PDO $db
+     */
     final protected function setWriteDB(PDO $db)
     {
         $this->_dbWrite = $db;
