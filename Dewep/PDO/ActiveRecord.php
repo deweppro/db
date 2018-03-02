@@ -198,7 +198,7 @@ abstract class ActiveRecord
      */
     final public function toArray(): array
     {
-        return $this->getParams();
+        return $this->getParams(true);
     }
 
 }
