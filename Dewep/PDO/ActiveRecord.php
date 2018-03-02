@@ -19,17 +19,6 @@ abstract class ActiveRecord
     protected $_private = [];
 
     /**
-     * @param PDO $read
-     * @param PDO|null $write
-     */
-    final public function __construct(PDO $read, PDO $write = null)
-    {
-        $this->_dbRead  = $read;
-        $this->_dbWrite = $write === null ? $read : $write;
-    }
-
-
-    /**
      * @return bool
      */
     final public function save(): bool
@@ -199,6 +188,16 @@ abstract class ActiveRecord
     final public function toArray(): array
     {
         return $this->getParams(true);
+    }
+
+    final protected function setReadDB(PDO $db)
+    {
+        $this->_dbRead = $db;
+    }
+
+    final protected function setWriteDB(PDO $db)
+    {
+        $this->_dbWrite = $db;
     }
 
 }
