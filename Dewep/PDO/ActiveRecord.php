@@ -15,6 +15,8 @@ abstract class ActiveRecord
     protected $_table;
     /** @var string */
     protected $_index;
+    /** @var array */
+    protected $_private = [];
 
     /**
      * @param PDO $read
@@ -99,10 +101,16 @@ abstract class ActiveRecord
     /**
      * @return array
      */
-    final protected function getParams()
+    final protected function getParams(bool $hidePrivate = false)
     {
         $use     = get_object_vars($this);
         $default = get_class_vars(self::class);
+
+        if ($hidePrivate) {
+            foreach ($this->_private as $param) {
+                unset($use[$param]);
+            }
+        }
 
         foreach ($default as $param => $value) {
             unset($use[$param]);
