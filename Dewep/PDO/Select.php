@@ -5,11 +5,11 @@ namespace Dewep\PDO;
 use PDOStatement;
 
 /**
- * @author Mikhail Knyazhev <markus621@gmail.com>
+ * Class Select
+ * @package Dewep\PDO
  */
 class Select
 {
-
     /** @var PDOStatement */
     protected $query;
     /** @var int */
@@ -18,6 +18,7 @@ class Select
     protected $link;
 
     /**
+     * Select constructor.
      * @param PDOStatement $query
      */
     public function __construct(\PDOStatement $query)
@@ -51,7 +52,7 @@ class Select
      * @param string $function
      * @return Select
      */
-    public function asCallback(string $function):Select
+    public function asCallback(string $function): Select
     {
         $this->type = \PDO::FETCH_FUNC;
         $this->link = $function;

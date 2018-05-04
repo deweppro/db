@@ -5,23 +5,23 @@ namespace Dewep\PDO;
 use PDOStatement;
 
 /**
- * @author Mikhail Knyazhev <markus621@gmail.com>
+ * Class PDO
+ * @package Dewep\PDO
  */
 class PDO
 {
-
     /** @var \PDO */
     protected $db;
-
-    /** @var bool  */
+    /** @var bool */
     protected $transaction = false;
 
     /**
+     * PDO constructor.
      * @param string $connect
-     * @param string $user
-     * @param string $pwd
+     * @param string|null $user
+     * @param string|null $pwd
      */
-    public function __construct(string $connect, string $user, string $pwd)
+    public function __construct(string $connect, string $user = null, string $pwd = null)
     {
         $this->db = new \PDO($connect, $user, $pwd);
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -67,7 +67,7 @@ class PDO
                 }
 
                 $this->db->commit();
-            } catch (\PDOExecption $exc) {
+            } catch (\Exception $exc) {
                 $this->db->rollBack();
 
                 throw new \Exception($exc->getMessage());
@@ -125,13 +125,10 @@ class PDO
 
     /**
      * @param $value
-     * @param string $key
      */
-    protected function array2json(&$value, string $key)
+    protected function array2json(&$value)
     {
-        if (
-        is_array($value)
-        ) {
+        if (is_array($value)) {
             $value = json_encode($value, JSON_UNESCAPED_UNICODE);
         }
     }
