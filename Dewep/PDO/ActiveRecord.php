@@ -3,6 +3,7 @@
 namespace Dewep\PDO;
 
 /**
+ * Class ActiveRecord
  * @package Dewep\PDO
  */
 abstract class ActiveRecord
