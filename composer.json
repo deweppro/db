@@ -20,8 +20,6 @@
   },
   "require": {
     "php": ">=7.0.0",
-    "ext-PDO": "*",
-    "ext-json": "*",
-    "ext-redis": "*"
+    "ext-PDO": "*"
   }
 }
