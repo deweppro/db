@@ -61,21 +61,21 @@ class Select
     }
 
     /**
-     * @return array
+     * @return mixed
      */
     public function getAll()
     {
-        if (empty($this->link)) {
-            return $this->query->fetchAll($this->type);
-        }
+        $this->fetchMode();
+        $data = $this->query->fetchAll();
+        $this->query->closeCursor();
 
-        return $this->query->fetchAll($this->type, $this->link);
+        return $data;
     }
 
     /**
-     * @param callable $callback
+     * @return Select
      */
-    public function getChunk(callable $callback)
+    private function fetchMode(): Select
     {
         if (empty($this->link)) {
             $this->query->setFetchMode($this->type);
@@ -83,9 +83,33 @@ class Select
             $this->query->setFetchMode($this->type, $this->link);
         }
 
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOne()
+    {
+        $this->fetchMode();
+        $data = $this->query->fetch();
+        $this->query->closeCursor();
+
+        return $data;
+    }
+
+    /**
+     * @param callable $callback
+     */
+    public function getChunk(callable $callback)
+    {
+        $this->fetchMode();
+
         while ($row = $this->query->fetch()) {
             $callback($row);
         }
+
+        $this->query->closeCursor();
     }
 
 }
