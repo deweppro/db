@@ -155,13 +155,13 @@ abstract class ActiveRecord
                 implode(' AND ', $query)
             ),
             $queryParams
-        )->asArray()->getAll();
+        )->asArray()->getOne();
 
-        if (empty($result[0])) {
+        if (empty($result)) {
             return false;
         }
 
-        $this->fillFromArray($result[0]);
+        $this->fillFromArray($result);
 
         return true;
     }
