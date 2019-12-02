@@ -6,6 +6,7 @@ use PDOStatement;
 
 /**
  * Class PDO
+ *
  * @package Dewep\PDO
  */
 class PDO
@@ -17,7 +18,8 @@ class PDO
 
     /**
      * PDO constructor.
-     * @param string $connect
+     *
+     * @param string      $connect
      * @param string|null $user
      * @param string|null $pwd
      */
@@ -31,7 +33,8 @@ class PDO
 
     /**
      * @param string $query
-     * @param array $params
+     * @param array  $params
+     *
      * @return Select
      * @throws \Exception
      */
@@ -44,7 +47,8 @@ class PDO
 
     /**
      * @param string $query
-     * @param array $params
+     * @param array  $params
+     *
      * @return PDOStatement
      * @throws \Exception
      */
@@ -86,7 +90,8 @@ class PDO
 
     /**
      * @param string $query
-     * @param array $params
+     * @param array  $params
+     *
      * @return int
      * @throws \Exception
      */
@@ -94,12 +99,13 @@ class PDO
     {
         $this->query($query, $params);
 
-        return $this->db->lastInsertId();
+        return (int)$this->db->lastInsertId();
     }
 
     /**
      * @param string $query
-     * @param array $params
+     * @param array  $params
+     *
      * @return int
      * @throws \Exception
      */
@@ -112,7 +118,8 @@ class PDO
 
     /**
      * @param string $query
-     * @param array $params
+     * @param array  $params
+     *
      * @return int
      * @throws \Exception
      */
@@ -124,9 +131,9 @@ class PDO
     }
 
     /**
-     * @param $value
+     * @param mixed $value
      */
-    protected function array2json(&$value)
+    protected function array2json(&$value): void
     {
         if (is_array($value)) {
             $value = json_encode($value, JSON_UNESCAPED_UNICODE);
@@ -135,6 +142,7 @@ class PDO
 
     /**
      * @param string $query
+     *
      * @return array
      */
     protected function getParamsFromQuery(string $query): array

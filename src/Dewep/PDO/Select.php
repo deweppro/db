@@ -6,6 +6,7 @@ use PDOStatement;
 
 /**
  * Class Select
+ *
  * @package Dewep\PDO
  */
 class Select
@@ -19,6 +20,7 @@ class Select
 
     /**
      * Select constructor.
+     *
      * @param PDOStatement $query
      */
     public function __construct(\PDOStatement $query)
@@ -38,6 +40,7 @@ class Select
 
     /**
      * @param string $class
+     *
      * @return Select
      */
     public function asClass(string $class): Select
@@ -50,6 +53,7 @@ class Select
 
     /**
      * @param string $function
+     *
      * @return Select
      */
     public function asCallback(string $function): Select
@@ -61,7 +65,7 @@ class Select
     }
 
     /**
-     * @return mixed
+     * @return array|bool
      */
     public function getAll()
     {
@@ -77,10 +81,10 @@ class Select
      */
     private function fetchMode(): Select
     {
-        if (empty($this->link)) {
-            $this->query->setFetchMode($this->type);
-        } else {
+        if (!empty($this->link) && (is_string($this->link) || is_object($this->link))) {
             $this->query->setFetchMode($this->type, $this->link);
+        } else {
+            $this->query->setFetchMode($this->type);
         }
 
         return $this;

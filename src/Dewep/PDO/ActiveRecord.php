@@ -4,6 +4,7 @@ namespace Dewep\PDO;
 
 /**
  * Class ActiveRecord
+ *
  * @package Dewep\PDO
  */
 abstract class ActiveRecord
@@ -28,9 +29,9 @@ abstract class ActiveRecord
             return false;
         }
 
-        $query       = [];
+        $query = [];
         $queryParams = [];
-        $params      = $this->getParams();
+        $params = $this->getParams();
 
         try {
 
@@ -93,7 +94,7 @@ abstract class ActiveRecord
      */
     final protected function getParams(bool $hidePrivate = false)
     {
-        $use     = get_object_vars($this);
+        $use = get_object_vars($this);
         $default = get_class_vars(self::class);
 
         if ($hidePrivate) {
@@ -111,6 +112,7 @@ abstract class ActiveRecord
 
     /**
      * @param string $key
+     *
      * @return string
      */
     final protected function php2db(string $key): string
@@ -130,9 +132,9 @@ abstract class ActiveRecord
      */
     final public function load(): bool
     {
-        $query       = [];
+        $query = [];
         $queryParams = [];
-        $params      = $this->getParams();
+        $params = $this->getParams();
 
         foreach ($params as $param => $value) {
             if ($value === null) {
@@ -181,6 +183,7 @@ abstract class ActiveRecord
 
     /**
      * @param string $key
+     *
      * @return string
      */
     final protected function db2php(string $key): string

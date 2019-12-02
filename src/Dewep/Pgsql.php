@@ -3,15 +3,17 @@
 namespace Dewep;
 
 /**
- * Class Mysql
+ * Class Pgsql
+ *
  * @package Dewep
  */
-class Mysql extends PDO\PDO
+class Pgsql extends PDO\PDO
 {
     /**
-     * Mysql constructor.
+     * Pgsql constructor.
+     *
      * @param string $host
-     * @param int $port
+     * @param int    $port
      * @param string $dbname
      * @param string $user
      * @param string $pwd
@@ -19,7 +21,7 @@ class Mysql extends PDO\PDO
     public function __construct(string $host, int $port, string $dbname, string $user, string $pwd)
     {
         parent::__construct(
-            sprintf("mysql:host=%s;port=%s;dbname=%s;charset=utf8", $host, $port, $dbname),
+            sprintf("pgsql:host=%s;port=%s;dbname=%s;charset=utf8", $host, $port, $dbname),
             $user,
             $pwd
         );
